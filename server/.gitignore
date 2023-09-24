@@ -1,0 +1,27 @@
+# Dependency directories
+node_modules/
+
+# Environment variables file (if used)
+.env
+
+# Log files
+logs/
+
+# Built or compiled files (e.g., for TypeScript)
+dist/
+build/
+
+# Editor/IDE files
+.vscode/
+.idea/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Configuration files (if not in your version control)
+config/*.js
+
+# Temporary files or directories
+tmp/
+temp/
