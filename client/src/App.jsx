@@ -1,11 +1,13 @@
 import { useState } from 'react'
+import Login from './Login'
+import Dashboard from './Dashboard'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div className=' text-green-500'>
-      Hello
+    <div >
+      <Dashboard />
     </div>
   )
 }
