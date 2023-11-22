@@ -30,13 +30,20 @@ const addLamp = async (req, res) => {
 const getStatus = async (req, res) => {
     {
         const roomNumber = parseInt(req.params.room);
-
-        const lampsInRoom = lamps.filter(lamp => lamp.room === roomNumber);
-
+        const lamps = await Lamp.findAll({
+            where: {
+                userId: 1,
+            }
+        });
+        if (lampsInRoom.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        const lampsInRoom = lamps.filter(lamp => lamp.room == roomNumber);
         if (lampsInRoom.length === 0) {
             return res.status(404).json({ error: 'Room not found' });
         }
         res.json(lampsInRoom);
+        console.log(lampsInRoom);
     }
 }
 const changeStatus = async (req, res) => {
