@@ -1,14 +1,19 @@
 import { useState } from 'react'
+import '@mantine/core/styles.css';
+import { MantineProvider } from '@mantine/core';
 import Login from './Login'
-import Dashboard from './Dashboard'
+import Home from './Home'
+
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div >
-      <Dashboard />
-    </div>
+    <MantineProvider>
+      <div >
+        <Home />
+      </div>
+    </MantineProvider>
   )
 }
 
