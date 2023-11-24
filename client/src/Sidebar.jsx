@@ -4,7 +4,7 @@ const Sidebar = () => {
     return (
         <div className="flex h-screen bg-gray-100  gradient">
             {/* Sidebar */}
-            <div className="w-64 bg-gray-800  text-gray-100">
+            <div className="w-64 blue-gradient text-gray-100">
                 {/* Logo */}
                 <div className="flex items-center justify-center h-20 border-b border-gray-700">
                     <img

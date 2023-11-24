@@ -20,3 +20,8 @@
     background: rgb(242, 157, 196);
     background: linear-gradient(180deg, rgba(242, 157, 196, 1) 14%, rgba(236, 176, 203, 1) 100%);
 }
+
+.blue-gradient {
+    background: rgb(34, 97, 110);
+    background: radial-gradient(circle, rgba(34, 97, 110, 1) 24%, rgba(19, 16, 66, 1) 90%);
+}
