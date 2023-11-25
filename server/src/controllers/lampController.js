@@ -1,4 +1,5 @@
 // Sample data to store lamp status
+const io = require('../../index')
 const lamps = [
     { room: 1, lampId: 1, status: 'off' },
     { room: 2, lampId: 1, status: 'on' },
@@ -69,6 +70,7 @@ const changeStatus = async (req, res) => {
         lamp.status = status;
         await lamp.save();
 
+        io.sockets.emit('statusChange', { status });
         res.json({ message: 'Lamp status updated successfully', lamp });
     } catch (error) {
         console.log(error);
