@@ -10,6 +10,29 @@ const lamps = [
 const Lamp = require('../models/lampModel');
 const User = require('../models/userModel')
 
+const getRooms = async (req, res) => {
+    //this function returns all rooms of user
+    try {
+        const userId = parseInt(req.params.userId);
+        const rooms = await Lamp.findAll({
+            attributes: ['room'],
+            where: {
+                userId: userId,
+            },
+            group: ['room']
+        });
+
+        if (rooms) {
+            res.status(200).json({ message: 'Rooms found', rooms });
+        }
+        else {
+            res.status(400).json({ message: 'No Rooms found' });
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const addLamp = async (req, res) => {
     try {
         const { userId, room, lampId } = req.body;
@@ -32,6 +55,7 @@ const getStatus = async (req, res) => {
     {
         const roomNumber = parseInt(req.params.room);
         const lamps = await Lamp.findAll({
+
             where: {
                 userId: 1,
             }
@@ -79,6 +103,7 @@ const changeStatus = async (req, res) => {
 }
 
 module.exports = {
+    getRooms,
     addLamp,
     getStatus,
     changeStatus
