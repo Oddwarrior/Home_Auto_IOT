@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Transition } from '@headlessui/react';
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Tooltip, Menu } from '@mantine/core';
@@ -9,9 +9,27 @@ import { MdOutlineDelete } from "react-icons/md";
 const RoomCard = ({ roomNumber, alias, rooms, setRooms }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sync, setSync] = useState(false);
+    // let initialLamps = [{ "number": 1, "status": "on" }]
+    const [lamps, setLamps] = useState([])
 
-    let initialLamps = [{ "number": 1, "status": "on" }]
-    const [lamps, setLamps] = useState(initialLamps)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/lamps/${roomNumber}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+                const data = await response.json();
+                setLamps(data);
+
+                // console.log(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -31,13 +49,15 @@ const RoomCard = ({ roomNumber, alias, rooms, setRooms }) => {
 
     const deleteRoom = () => {
         // Filter out the room with the given ID
-        console.log("deleting room");
-        const updatedRooms = rooms.filter((room) => room.roomNo !== roomNumber);
+        const updatedRooms = rooms.filter((room) => room.room !== roomNumber);
         setRooms(updatedRooms);
+        console.log(rooms);
     };
 
     const syncData = () => {
-        setSync(!sync)
+        setSync(true);
+        fetchData();
+        setSync(false);
     }
 
     return (
@@ -67,17 +87,18 @@ const RoomCard = ({ roomNumber, alias, rooms, setRooms }) => {
             <Modal opened={isModalOpen} onClose={closeModal} size="xl" >
                 <div className="w-full h-full  items-center justify-center px-4 pb-2 rounded-lg cursor-default">
                     <section className=' flex gap-4 items-center'>
-                        <h2 className="text-xl font-bold">Room : 101 </h2>
+                        <h2 className="text-xl font-bold">{`Room : ${roomNumber}`}</h2>
                         <Tooltip label="Sync" position="right" offset={5} onClick={syncData}>
                             <h1><FaSync className={sync ? 'animate-spin' : ''} /></h1>
                         </Tooltip>
                     </section>
                     <p className="text-sm text-gray-600 mb-4">alias</p>
                     {/* lamps */}
+                    {lamps.length == 0 && <div className=' p-2 '>Lamps not added .</div>}
                     <div className="space-y-4">
-                        {lamps.map((lamp) => (
+                        {lamps.map((lamp, index) => (
                             <div key={lamp.id} className="flex items-center justify-between p-2 border rounded-md">
-                                <span className="text-lg">{`Lamp ${lamp.number}`}</span>
+                                <span className="text-lg font-bold">{`Lamp ${index}`}</span>
                                 <span className={`rounded-full h-4 w-4 ${lamp.status == 'on' ? 'bg-green-500' : 'bg-red-500'}`}></span>
                             </div>
                         ))}

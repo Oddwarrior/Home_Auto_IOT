@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Modal } from '@mantine/core';
 
-function AddNewRoom({ addRoomOpen, setAddRoomOpen }) {
+function AddNewRoom({ addRoomOpen, setAddRoomOpen, rooms, setRooms }) {
 
     const [roomNumber, setRoomNumber] = useState('');
     const [roomName, setRoomName] = useState('');
@@ -12,12 +12,17 @@ function AddNewRoom({ addRoomOpen, setAddRoomOpen }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (roomNumber && roomName) {
-            // addRoom({ roomNo: roomNumber, name: roomName });
+            const newRoom = {
+                "room": roomNumber,
+                "name": roomName
+            }
+            setRooms(prevRooms => [...prevRooms, newRoom]);
             setRoomNumber('');
             setRoomName('');
         }
         setAddRoomOpen(false);
     };
+
 
     const handleClose = () => {
         setAddRoomOpen(false);

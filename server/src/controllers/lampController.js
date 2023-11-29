@@ -49,8 +49,8 @@ const addLamp = async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-
 }
+
 const getStatus = async (req, res) => {
     {
         const roomNumber = parseInt(req.params.room);
@@ -60,7 +60,8 @@ const getStatus = async (req, res) => {
                 userId: 1,
             }
         });
-        if (lampsInRoom.length === 0) {
+
+        if (lamps.length === 0) {
             return res.status(404).json({ error: 'User not found' });
         }
         const lampsInRoom = lamps.filter(lamp => lamp.room == roomNumber);

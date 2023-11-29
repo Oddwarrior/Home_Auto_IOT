@@ -21,7 +21,7 @@ const Home = () => {
             try {
                 const response = await axios.get(`http://localhost:3000/api/rooms/${userId}`); // Replace '/api/rooms/' with your actual API endpoint
                 setRooms(response.data.rooms);
-                console.log(rooms);
+                // console.log(rooms);
             } catch (error) {
                 console.error('Error fetching rooms:', error);
                 setRooms([])
@@ -55,7 +55,7 @@ const Home = () => {
                             className="bg-black rounded-full  hover:bg-gray-700 duration-300 text-white font-semibold py-2 px-4">
                             Add new Room
                         </button>
-                        <AddNewRoom addRoomOpen={addRoomOpen} setAddRoomOpen={setAddRoomOpen} />
+                        <AddNewRoom addRoomOpen={addRoomOpen} setAddRoomOpen={setAddRoomOpen} rooms={rooms} setRooms={setRooms} />
                     </div>
                     <div className="grid grid-cols-4 gap-4 py-4">
                         {rooms.map((room, index) => (
