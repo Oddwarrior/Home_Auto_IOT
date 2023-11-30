@@ -1,4 +1,5 @@
 import React from 'react';
+import { LuLayoutDashboard } from "react-icons/lu";
 
 const Sidebar = () => {
     return (
@@ -7,33 +8,31 @@ const Sidebar = () => {
             <div className="w-64 bg-black text-gray-100">
                 {/* Logo */}
                 <div className="flex items-center justify-center h-20 border-b border-gray-700">
-                    <img
-                        className="h-10 w-auto"
-                        src="path_to_your_logo.png"
-                        alt="Logo"
-                    />
+                    <div className="h-10 w-auto font-bold" >
+                        SmartLamps
+                    </div>
                 </div>
 
                 {/* Sidebar Items */}
-                <div className="p-4">
+                <div className="p-4 rounded-xl">
                     <a
                         href="#"
-                        className="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
+                        className="block py-2 px-4 text-sm rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white"
                     >
-                        Item 1
+                        Dashboard
                     </a>
                     <a
                         href="#"
-                        className="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
+                        className="block py-2 px-4 text-sm rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white"
                     >
-                        Item 2
+                        Profile
                     </a>
                     {/* Add more sidebar items as needed */}
                 </div>
             </div>
 
             {/* Main Content */}
-        </div>
+        </div >
     );
 };
 
