@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Modal } from '@mantine/core';
+import useAuth from './UserContext';
+import axios from 'axios';
 
 function AddNewRoom({ addRoomOpen, setAddRoomOpen, rooms, setRooms }) {
 
@@ -8,14 +10,29 @@ function AddNewRoom({ addRoomOpen, setAddRoomOpen, rooms, setRooms }) {
 
     const handleRoomNumberChange = (e) => setRoomNumber(e.target.value);
     const handleRoomNameChange = (e) => setRoomName(e.target.value);
+    const { token } = useAuth();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (roomNumber && roomName) {
             const newRoom = {
                 "room": roomNumber,
                 "name": roomName
             }
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}` // Send the token in the 'Authorization' header
+                }
+            };
+
+            // Call the API to add a room
+            const response = await axios.post('http://localhost:3000/api/rooms/add', {
+                "room": roomNumber, "name": roomName
+            }, config);
+
+            console.log(response);
+
             setRooms(prevRooms => [...prevRooms, newRoom]);
             setRoomNumber('');
             setRoomName('');

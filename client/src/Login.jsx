@@ -1,6 +1,10 @@
 import { useState } from 'react';
+import useAuth from './UserContext';
+import axios from 'axios';
 
 const Login = () => {
+    const { login } = useAuth();
+
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
 
@@ -12,10 +16,25 @@ const Login = () => {
         setPassword(e.target.value);
     };
 
-    const handleLogin = () => {
-        // Add your login logic here using userId and password
-        console.log('User ID:', userId);
-        console.log('Password:', password);
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post('http://localhost:3000/api/user/login', {
+                userId,
+                password,
+            });
+
+            const { token, user } = response.data;
+
+            // Save token and user data using the login function from the context
+            login(user, token);
+
+            // Redirect the user or perform any other action after successful login
+        } catch (error) {
+            console.error('Login error:', error);
+            // Handle login error (display error message, etc.)
+        }
     };
 
     return (

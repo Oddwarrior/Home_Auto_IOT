@@ -3,15 +3,15 @@ import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import Login from './Login'
 import Home from './Home'
-
+import useAuth from './UserContext';
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const { token } = useAuth();
   return (
     <MantineProvider>
       <div >
-        <Home />
+        {token && <Home />}
+        {!token && <Login />}
       </div>
     </MantineProvider>
   )

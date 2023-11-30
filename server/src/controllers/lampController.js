@@ -1,21 +1,47 @@
 // Sample data to store lamp status
 const io = require('../../index')
-const lamps = [
-    { room: 1, lampId: 1, status: 'off' },
-    { room: 2, lampId: 1, status: 'on' },
-    { room: 3, lampId: 1, status: 'off' },
-    // ... add more lamps and rooms as needed
-];
 
 const Lamp = require('../models/lampModel');
 const User = require('../models/userModel')
+const Room = require('../models/roomModel');
+
+const addRoom = async (req, res) => {
+    const userId = req.userId;
+    const { room, name } = req.body;
+    try {
+        const newRoom = await Room.create({
+            userId,
+            room,
+            name
+        });
+        return res.status(201).json({ message: 'Room added sucessfully', newRoom });
+
+    } catch (error) {
+        res.status(400).json({ message: 'Failed to add room ' });
+        console.log(error);
+    }
+}
+const deleteRoom = async (req, res) => {
+    const userId = req.userId;
+    const { room } = req.body;
+    try {
+        const deletedRoom = await Room.destroy({ where: { userId: userId, room: room } });
+        if (deletedRoom === 0) {
+            throw new Error('Room not found');
+        }
+        return res.status(201).json({ message: 'Room deleted sucessfully', deletedRoom });
+
+    } catch (error) {
+        res.status(400).json({ message: 'Failed to delete room ', room });
+        console.log(error);
+    }
+}
 
 const getRooms = async (req, res) => {
     //this function returns all rooms of user
     try {
-        const userId = parseInt(req.params.userId);
-        const rooms = await Lamp.findAll({
-            attributes: ['room'],
+        const userId = req.userId;
+        const rooms = await Room.findAll({
             where: {
                 userId: userId,
             },
@@ -35,11 +61,12 @@ const getRooms = async (req, res) => {
 
 const addLamp = async (req, res) => {
     try {
-        const { userId, room, lampId } = req.body;
+        const userId = req.userId;
+        const { room, lampId } = req.body;
         const newLamp = Lamp.create({
             userId,
             room,
-            lampId
+            lampId,
         });
         const lamps = await Lamp.findAll();
         console.log("All lamps:", JSON.stringify(lamps, null, 2));
@@ -51,13 +78,41 @@ const addLamp = async (req, res) => {
     }
 }
 
+const deleteLamp = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const { room, lampId } = req.body; // Assuming lampId is sent as a route parameter
+
+        // Check if the lamp exists for the given user before deleting
+        const lampToDelete = await Lamp.findOne({ where: { userId, room, lampId } });
+
+        if (!lampToDelete) {
+            return res.status(404).send("Lamp not found or unauthorized to delete");
+        }
+
+        // If the lamp exists for the user, delete it
+        await Lamp.destroy({ where: { userId, room, lampId } });
+
+        // Optionally, retrieve the updated list of lamps after deletion
+        const lamps = await Lamp.findAll();
+        console.log("All lamps after deletion:", JSON.stringify(lamps, null, 2));
+
+        return res.status(200).send("Lamp deleted successfully");
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("Error deleting lamp");
+    }
+}
+
+
 const getStatus = async (req, res) => {
     {
+        const userId = req.userId;
         const roomNumber = parseInt(req.params.room);
         const lamps = await Lamp.findAll({
 
             where: {
-                userId: 1,
+                userId: userId,
             }
         });
 
@@ -74,7 +129,8 @@ const getStatus = async (req, res) => {
 }
 const changeStatus = async (req, res) => {
     try {
-        const { userId, room, lampId, status } = req.body;
+        const userId = req.userId;
+        const { room, lampId, status } = req.body;
 
         if (!room || !lampId || !status) {
             return res.status(400).json({ error: 'Missing required fields' });
@@ -104,8 +160,11 @@ const changeStatus = async (req, res) => {
 }
 
 module.exports = {
+    addRoom,
+    deleteRoom,
     getRooms,
     addLamp,
+    deleteLamp,
     getStatus,
     changeStatus
 }

@@ -4,6 +4,7 @@ import RoomCard from './Roomcard';
 import SearchBar from './Searchbar';
 import AddNewRoom from './AddNewRoom';
 import axios from 'axios';
+import useAuth from './UserContext';
 
 const Home = () => {
     // let initial_rooms = [
@@ -14,12 +15,18 @@ const Home = () => {
 
     const [rooms, setRooms] = useState([])
     const [addRoomOpen, setAddRoomOpen] = useState(false)
-    const userId = 1;
+
+    const { token } = useAuth();
 
     useEffect(() => {
         const fetchRooms = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/rooms/${userId}`); // Replace '/api/rooms/' with your actual API endpoint
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Send the token in the 'Authorization' header
+                    }
+                };
+                const response = await axios.get('http://localhost:3000/api/rooms', config);// Replace '/api/rooms/' with your actual API endpoint
                 setRooms(response.data.rooms);
                 // console.log(rooms);
             } catch (error) {
