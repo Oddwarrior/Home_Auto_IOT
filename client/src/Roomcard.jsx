@@ -140,7 +140,7 @@ const RoomCard = ({ roomNumber, alias, rooms, setRooms }) => {
                         {lamps.map((lamp, index) => (
                             <div key={lamp.id} className="flex items-center justify-between p-2 border rounded-md">
                                 <span className="text-lg font-bold">{`Lamp ${lamp.lampId}`}</span>
-                                <span onClick={deleteLamp}>delete</span>
+                                {/* <span onClick={deleteLamp}>delete</span> */}
                                 <span className={`rounded-full h-4 w-4 ${lamp.status == 'on' ? 'bg-green-500' : 'bg-red-500'}`}></span>
                             </div>
                         ))}

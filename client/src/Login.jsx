@@ -39,7 +39,7 @@ const Login = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded shadow-md w-80">
+            <div className="bg-white p-8 rounded-xl shadow-md w-80">
                 <h2 className="text-2xl font-semibold mb-4">Login</h2>
                 <div className="mb-4">
                     <label htmlFor="userId" className="block text-gray-700 font-semibold mb-1">User ID</label>
@@ -48,7 +48,7 @@ const Login = () => {
                         id="userId"
                         value={userId}
                         onChange={handleUserIdChange}
-                        className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                        className="w-full border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-500"
                     />
                 </div>
                 <div className="mb-6">
@@ -58,12 +58,12 @@ const Login = () => {
                         id="password"
                         value={password}
                         onChange={handlePasswordChange}
-                        className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                        className="w-full border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:border-blue-500"
                     />
                 </div>
                 <button
                     onClick={handleLogin}
-                    className="w-full bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600 transition duration-300"
+                    className="w-full bg-black text-white font-semibold py-2 rounded-xl hover:bg-gray-600 transition duration-300"
                 >
                     Login
                 </button>

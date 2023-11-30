@@ -29,6 +29,7 @@ const deleteRoom = async (req, res) => {
         if (deletedRoom === 0) {
             throw new Error('Room not found');
         }
+        await Lamp.destroy({ where: { userId: userId, room: room } });
         return res.status(201).json({ message: 'Room deleted sucessfully', deletedRoom });
 
     } catch (error) {
@@ -129,8 +130,7 @@ const getStatus = async (req, res) => {
 }
 const changeStatus = async (req, res) => {
     try {
-        const userId = req.userId;
-        const { room, lampId, status } = req.body;
+        const { userId, room, lampId, status } = req.body;
 
         if (!room || !lampId || !status) {
             return res.status(400).json({ error: 'Missing required fields' });
